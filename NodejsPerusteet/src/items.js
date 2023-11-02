@@ -4,10 +4,21 @@ let items = [
   { id: 19, name: "appelsiini" },
 ];
 
-const getItems = (res) => {
-  res.json(items);
-  res.writeHead(200, { "Content-Type": "application/json" });
-  res.end(JSON.stringify({ message: "All items", items }));
+/**
+ * Gets all items
+ * 
+ * @param {object} req - http request
+ * @param {object} res - http response
+ */
+
+const getItems = (req, res) => {
+  const limit = req.query.limit;
+  //TODO: check that the param value is int
+  if (limit) {
+    res.json(items.slice(0, limit));
+  } else {
+    res.json(items);
+  }
 };
 
 const getItemsById = (req, res) => {
@@ -17,7 +28,7 @@ const getItemsById = (req, res) => {
     res.json(item)
   } else {
     res.status(404);
-    res.json{(message: "Item not found.")};
+    res.json({message: "Item not found."});
   }
   res.sendStatus(200);
 };

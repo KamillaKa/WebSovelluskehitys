@@ -17,17 +17,31 @@ const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+app.set("view engine", "pug");
+app.set("views", "src/views");
+
 app.use(express.json());
 app.use("/docs", express.static(path.join(__dirname, "../docs")));
 
+app.use((req, res, next) => {
+  console.log("Time:", Date.now(), req.method, req.url);
+  next();
+});
+
 app.get("/", (req, res) => {
-  res.send("Welcome to my REST API");
+  const values = { title: "REST API docs", message: "TODO: docs" };
+  res.render("index", values);
 });
 
 app.get("/kukkuu", (request, response) => {
-  const myResponse = (message: "Morje morje!");
+  const myResponse = { message: "Morje morje!" };
   response.status(200);
   //  response.json(myResponse);
+});
+
+app.get("/:message", (req, res) => {
+  const values = { title: "REST API docs", message: req.params.message };
+  res.render("index", values);
 });
 
 app.get("/api/items", getItems);
