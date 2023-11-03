@@ -1,8 +1,6 @@
 import express from "express";
 import path from "path";
 import { fileURLToPath } from "url";
-import { getItems, getItemsById, postItem } from "./items.js";
-import http from "http";
 import {
   getItems,
   getItemsById,
@@ -10,6 +8,7 @@ import {
   deleteItem,
   putItem,
 } from "./items.js";
+import { mediaItems, getMedia, getMediaById } from "./media.js";
 
 const hostname = "127.0.0.1";
 const port = 3000;
@@ -22,6 +21,7 @@ app.set("views", "src/views");
 
 app.use(express.json());
 app.use("/docs", express.static(path.join(__dirname, "../docs")));
+app.use("/media", express.static(path.join(__dirname, "../media")));
 
 app.use((req, res, next) => {
   console.log("Time:", Date.now(), req.method, req.url);
@@ -29,54 +29,19 @@ app.use((req, res, next) => {
 });
 
 app.get("/", (req, res) => {
-  const values = { title: "REST API docs", message: "TODO: docs" };
-  res.render("index", values);
-});
-
-app.get("/kukkuu", (request, response) => {
-  const myResponse = { message: "Morje morje!" };
-  response.status(200);
-  //  response.json(myResponse);
-});
-
-app.get("/:message", (req, res) => {
-  const values = { title: "REST API docs", message: req.params.message };
+  const values = { title: "REST API docs", message: "API documentation here" };
   res.render("index", values);
 });
 
 app.get("/api/items", getItems);
 app.get("/api/items/:id", getItemsById);
-app.put("/api/items");
 app.post("/api/items", postItem);
-app.delete("/api/items");
+app.delete("/api/items/:id", deleteItem);
+app.put("/api/items/:id", putItem);
+
+app.get("/api/media", getMedia);
+app.get("/api/media/:id", getMediaById);
 
 app.listen(port, hostname, () => {
-  console.log(`Server running at http://${hostname}:${port}/`);
-});
-
-const server = http.createServer((req, res) => {
-  const { method, url } = req;
-  const reqParts = url.split("/");
-
-  if (method === "GET" && url === "/") {
-    res.writeHead(200, { "Content-Type": "application/json" });
-    res.end('{"message": "API documentation"}');
-  } else if (method === "GET" && reqParts[1] === "items" && reqParts[2]) {
-    getItemsById(res, reqParts[2]);
-  } else if (method === "GET" && reqParts[1] === "items") {
-    getItems(res);
-  } else if (method === "POST" && reqParts[1] === "items") {
-    postItem(req, res);
-  } else if (method === "DELETE" && reqParts[1] === "items" && reqParts[2]) {
-    deleteItem(res, reqParts[2]);
-  } else if (method === "PUT" && reqParts[1] === "items" && reqParts[2]) {
-    putItem(req, res, reqParts[2]);
-  } else {
-    res.writeHead(404, { "Content-Type": "application/json" });
-    res.end('{"message": "404 Resource not found"}');
-  }
-});
-
-server.listen(port, hostname, () => {
   console.log(`Server running at http://${hostname}:${port}/`);
 });

@@ -1,4 +1,4 @@
-[
+const mediaItems = [
   {
     media_id: 9632,
     filename: "ffd8.jpg",
@@ -50,3 +50,18 @@
     created_at: "2023-10-12T06:56:41.000Z",
   },
 ];
+
+const getMedia = (req, res) => {
+  res.status(200).json(mediaItems);
+};
+
+const getMediaById = (req, res) => {
+  const item = mediaItems.find((element) => element.media_id == req.params.id);
+  if (item) {
+    res.json(item);
+  } else {
+    res.status(404).json({ message: "Media not found." });
+  }
+};
+
+export { mediaItems, getMedia, getMediaById };
