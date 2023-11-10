@@ -59,11 +59,13 @@ INSERT INTO MediaItems (filename, filesize, title, description, user_id, media_t
 
 --add comments
 INSERT INTO MediaComments (media_id, user_id, comment_text, created_at) 
-    VALUES (2, 260, 'Very cool drink!', null),
-            (4, 262, 'You look extra handsome today!', null);
+  VALUES (2, 260, 'Very cool drink!', null),
+        (4, 262, 'You look extra handsome today!', null);
 
 --add likes
 INSERT INTO MediaLikes (media_id, user_id, created_at) 
-    VALUES (3, 260, null),
-            (4, 260, null),
-            (4, 262, null);
+  VALUES (3, 260, null),
+        (4, 260, null),
+        (4, 262, null);
+
+
