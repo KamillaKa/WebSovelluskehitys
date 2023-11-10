@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inconsolata&display=swap" rel="stylesheet">
+    <title>Scroll Parallax</title>
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Inconsolata', monospace;
+        background-color: black;
+    }
+
+    .hero {
+        height: 700px;
+        background-color: palevioletred;
+    }
+
+    main {
+        padding: 2em;
+        color: palegoldenrod;
+        background-color: #150f0c;
+        position: relative;
+        z-index: 10;
+        margin-top: -5px;
+    }
+
+    .pic {
+        width: 100%;
+        height: 700px;
+        background-position: bottom center;
+        background-repeat: no-repeat;
+        background-size: auto;
+        position: fixed;
+    }
+
+    .fix {
+        /* background-attachment: fixed;
+        background-size: cover; */
+        background-color: peachpuff;
+    }
+
+    .c {
+        background-image: url(images/ilu_01.jpg);
+    } 
+
+    .d {
+        background-image: url(images/ilu_02.png);
+    } 
+
+    .e {
+        background-image: url(images/ilu_03.png);
+    } 
+
+    .f {
+        background-image: url(images/ilu_04.png);
+    } 
+
+    .g {
+        background-image: url(images/ilu_05.png);
+    } 
+
+    .h {
+        background-image: url(images/ilu_06.png);
+    } 
+
+    .b {
+        background-image: url(images/mountains.jpg);
+    }
+</style>
+<body>
+    <div class="hero">
+        <div class="pic c" data-type="parallax" data-speed="5"></div>
+        <div class="pic d" data-type="parallax" data-speed="20"></div>
+        <div class="pic e" data-type="parallax" data-speed="40"></div>
+        <div class="pic f" data-type="parallax" data-speed="60"></div>
+        <div class="pic g" data-type="parallax" data-speed="80"></div>
+        <div class="pic h" data-type="parallax" data-speed="100"></div>
+    </div>
+    <main>
+        <h1>Lorem ipsum dolor sit amet consectetur adipisicing elit.</h1>
+        <p>
+            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Porro, ea provident molestias ex placeat animi mollitia itaque dolore vitae laboriosam veritatis nesciunt nostrum. Optio velit tempore eos amet, soluta expedita.
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. In maiores itaque debitis doloribus quia. Commodi a quae nostrum. At amet odit laudantium hic molestiae accusamus velit rerum impedit minus fugiat.
+        </p>
+    </main>
+    <div class="hero">
+        <div class="fix pic b"></div>
+    </div>
+    <script>
+        window.addEventListener("scroll", function(event){
+
+            var top = this.pageYOffset;
+    
+            var layers = document.querySelectorAll('[data-type="parallax"]');
+            var layer, speed, yPos;
+            for (var i = 0; i < layers.length; i++) {
+                layer = layers[i];
+                speed = layer.getAttribute('data-speed');
+                var yPos = -(top * speed / 100);
+                layer.setAttribute('style', 'transform: translate3d(0px, ' + yPos + 'px, 0px)');
+    
+            }
+        });
+    </script>
+</body>
+</html>
