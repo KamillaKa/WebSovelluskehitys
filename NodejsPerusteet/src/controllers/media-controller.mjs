@@ -51,9 +51,24 @@ const mediaItems = [
   },
 ];
 
+const postMedia = (req, res) => {
+  console.log("uploaded file", req.file);
+  console.log("uploaded form data", req.body);
+  const {title, description, user_id} = req.body;
+  const {filename, mimetype, size} = req.file;
+  const newId = mediaItems[0].media_id + 1;
+  if (filename && title && user_id) {
+    mediaItems.unshift{(media_id: newId, filename, title, description, user_id, media_type: mimetype, filesize: size)};
+    res.status(201);
+    res.json
+  }
+  res.json(req.body);
+};
+
 const getMedia = (req, res) => {
   res.status(200).json(mediaItems);
 };
+
 const getMediaById = (req, res) => {
   const item = mediaItems.find((element) => element.media_id == req.params.id);
   if (item) {
@@ -62,4 +77,5 @@ const getMediaById = (req, res) => {
     res.status(404).json({ message: "Media not found." });
   }
 };
-export { mediaItems, getMedia, getMediaById };
+
+export { mediaItems, getMedia, getMediaById, postMedia };

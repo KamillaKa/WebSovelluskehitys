@@ -1,18 +1,94 @@
-### GET /
-GET http://localhost:3000/
+### Get all media
+GET http://localhost:3000/api/media
 
-### GET /items
-GET http://localhost:3000/api/items
+### Get media by id
+GET http://localhost:3000/api/media/9590
 
-### GET /items/:id
-GET http://localhost:3000/api/items/20
+### Get media by id FAIL
+GET http://localhost:3000/api/media/959099
 
-### POST /items
-POST http://localhost:3000/api/items
+### Post media 
+POST http://localhost:3000/api/media
 content-type: application/json
 
-{"name": "kurkku"}
-### POST /items error
-POST http://localhost:3000/api/items
+{
+  "filename": "newpost.jpg",
+  "title": "New Media",
+  "description": "New description",
+  "user_id": 305
+}
 
-{"jotain": "jotan"}
+### Post media FAIL
+POST http://localhost:3000/api/media
+content-type: application/json
+
+{"msg": "HEllo"}
+
+### Update media
+PUT http://localhost:3000/api/media/959
+content-type: application/json
+
+{
+  "filename": "updated.jpg",
+  "title": "Updated Media",
+  "description": "updated description",
+}
+
+### Update media FAIL
+PUT http://localhost:3000/api/media/260
+content-type: application/json
+
+{
+  "something": "this will fail",
+}
+
+### Delete media
+DELETE http://localhost:3000/api/media/9590
+
+## /api/users endpoint
+
+### Get all users
+GET http://localhost:3000/api/users
+
+### Get user by id
+GET http://localhost:3000/api/users/260
+
+### Get user by id FAIL
+GET http://localhost:3000/api/users/959099
+
+### Post users 
+POST http://localhost:3000/api/users
+content-type: application/json
+
+{
+  "username": "Newuser",
+  "password": "newsecret",
+  "email": "newuser@example.com"
+}
+
+### Post users FAIL
+POST http://localhost:3000/api/users
+content-type: application/json
+
+{"msg": "HEllo"}
+
+### Update user
+PUT http://localhost:3000/api/users/260
+content-type: application/json
+
+{
+  "username": "Newuser",
+  "password": "newsecret",
+  "email": "newuser@example.com"
+}
+
+### Update users FAIL
+PUT http://localhost:3000/api/users/340
+content-type: application/json
+
+{
+  "something": "this will fail",
+}
+
+### Delete users
+DELETE http://localhost:3000/api/users/260
