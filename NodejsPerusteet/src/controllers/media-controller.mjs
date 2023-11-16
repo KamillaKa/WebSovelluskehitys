@@ -1,55 +1,4 @@
-const mediaItems = [
-  {
-    media_id: 9632,
-    filename: "ffd8.jpg",
-    filesize: 887574,
-    title: "Favorite drink",
-    description: "",
-    user_id: 1606,
-    media_type: "image/jpeg",
-    created_at: "2023-10-16T19:00:09.000Z",
-  },
-  {
-    media_id: 9626,
-    filename: "dbbd.jpg",
-    filesize: 60703,
-    title: "Miika",
-    description: "My Photo",
-    user_id: 3671,
-    media_type: "image/jpeg",
-    created_at: "2023-10-13T12:14:26.000Z",
-  },
-  {
-    media_id: 9625,
-    filename: "2f9b.jpg",
-    filesize: 30635,
-    title: "Aksux",
-    description: "friends",
-    user_id: 260,
-    media_type: "image/jpeg",
-    created_at: "2023-10-12T20:03:08.000Z",
-  },
-  {
-    media_id: 9592,
-    filename: "f504.jpg",
-    filesize: 48975,
-    title: "Desert",
-    description: "",
-    user_id: 3609,
-    media_type: "image/jpeg",
-    created_at: "2023-10-12T06:59:05.000Z",
-  },
-  {
-    media_id: 9590,
-    filename: "60ac.jpg",
-    filesize: 23829,
-    title: "Basement",
-    description: "Light setup in basement",
-    user_id: 305,
-    media_type: "image/jpeg",
-    created_at: "2023-10-12T06:56:41.000Z",
-  },
-];
+import { fetchAllMedia } from "../models/media-model.mjs";
 
 const postMedia = (req, res) => {
   console.log("uploaded file", req.file);
@@ -58,23 +7,28 @@ const postMedia = (req, res) => {
   const {filename, mimetype, size} = req.file;
   const newId = mediaItems[0].media_id + 1;
   if (filename && title && user_id) {
-    mediaItems.unshift{(media_id: newId, filename, title, description, user_id, media_type: mimetype, filesize: size)};
+    const result = await addMedia({user_id, filename, size, mimetype, title, description}); 
     res.status(201);
-    res.json
+    res.json ({message: "Media added", ...result});
+  } else {
+    res.sendStatus(400);
   }
-  res.json(req.body);
 };
 
-const getMedia = (req, res) => {
+const getMedia = await (req, res) => {
+  const mediaItems = await fetchAllMedia();
   res.status(200).json(mediaItems);
 };
 
-const getMediaById = (req, res) => {
-  const item = mediaItems.find((element) => element.media_id == req.params.id);
-  if (item) {
-    res.json(item);
+const getMediaById = await (req, res) => {
+  const result = await fetchMediaById(req.params.id);
+  if (result.error) {
+    res.status(500).json(result);
+  }
+  if (result) {
+    res.json(result);
   } else {
-    res.status(404).json({ message: "Media not found." });
+    res.status(404).json({ message: "Media not found.", media_id: req.params.id });
   }
 };
 

@@ -68,4 +68,3 @@ INSERT INTO MediaLikes (media_id, user_id, created_at)
         (4, 260, null),
         (4, 262, null);
 
-
