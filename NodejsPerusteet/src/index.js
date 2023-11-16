@@ -11,10 +11,12 @@ import {
 import { mediaItems, getMedia, getMediaById } from "./media.js";
 
 const hostname = "127.0.0.1";
+const express = require("express");
 const port = 3000;
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
 
 app.set("view engine", "pug");
 app.set("views", "src/views");
@@ -29,18 +31,21 @@ app.use((req, res, next) => {
 });
 
 app.get("/", (req, res) => {
-  const values = { title: "REST API docs", message: "API documentation here" };
+  const values = { title: "REST API", message: "API documentation here" };
   res.render("index", values);
 });
 
-app.get("/api/items", getItems);
-app.get("/api/items/:id", getItemsById);
-app.post("/api/items", postItem);
-app.delete("/api/items/:id", deleteItem);
-app.put("/api/items/:id", putItem);
+app.get('/api/media', getItems);
+app.get('/api/media/:id', getItemsById);
+app.put('/api/media/:id', putItem);
+app.post('/api/media', postItem);
+app.delete('/api/media/:id', deleteItem);
 
-app.get("/api/media", getMedia);
-app.get("/api/media/:id", getMediaById);
+app.get('/api/user', getUsers);
+app.get('/api/user/:id', getUsersById);
+app.put('/api/user/:id', putUser);
+app.post('/api/user', postUser);
+app.delete('/api/user/:id', deleteUser);
 
 app.listen(port, hostname, () => {
   console.log(`Server running at http://${hostname}:${port}/`);
