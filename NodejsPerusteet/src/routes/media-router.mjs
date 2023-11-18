@@ -5,7 +5,7 @@ import {
   deleteMedia,
   getMedia,
   postMedia,
-  putMedia,
+  updatedMedia,
 } from "../controllers/media-controller.mjs";
 import logger from "../middleware/middlewares.mjs";
 
@@ -14,7 +14,12 @@ const upload = multer({ dest: "uploads/" });
 
 // mediaRouter.use(logger);
 
+mediaRouter.post("/", upload.single("file"), postMedia);
 mediaRouter.route("/").get(getMedia).post(upload.single("file"), postMedia);
-mediaRouter.route("/:id").get(getMediaById).put(putMedia).delete(deleteMedia);
+mediaRouter
+  .route("/:id")
+  .get(getMediaById)
+  .put(updatedMedia)
+  .delete(deleteMedia);
 
 export default mediaRouter;
