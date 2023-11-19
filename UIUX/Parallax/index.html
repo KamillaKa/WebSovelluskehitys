@@ -15,14 +15,22 @@
         box-sizing: border-box;
     }
 
+    html {
+        scroll-behavior: smooth;
+    }
+
     body {
         font-family: 'Inconsolata', monospace;
         background-color: black;
+        perspective: 1px;
+        overflow-x: hidden;
+        overflow-y: auto;
+        will-change: scroll-position;
     }
 
     .hero {
         height: 700px;
-        background-color: palevioletred;
+        background-color: black;
     }
 
     main {
@@ -50,31 +58,40 @@
     }
 
     .c {
-        background-image: url(images/ilu_01.jpg);
+        background-image: url(images/bg.jpg);
     } 
 
     .d {
-        background-image: url(images/ilu_02.png);
+        background-image: url(images/1.png);
     } 
 
     .e {
-        background-image: url(images/ilu_03.png);
+        background-image: url(images/2.png);
+        
     } 
 
     .f {
-        background-image: url(images/ilu_04.png);
+        background-image: url(images/3.png);
+        bottom: 600px;
     } 
 
     .g {
-        background-image: url(images/ilu_05.png);
+        background-image: url(images/4.png);
+        right: 500px;
     } 
 
     .h {
-        background-image: url(images/ilu_06.png);
+        background-image: url(images/5.png);
     } 
 
-    .b {
+    .mountains {
         background-image: url(images/mountains.jpg);
+        width: 100%;
+        height: 700px;
+        background-position: bottom center;
+        background-repeat: no-repeat;
+        background-size: auto;
+        position: fixed;
     }
 </style>
 <body>
@@ -94,7 +111,7 @@
         </p>
     </main>
     <div class="hero">
-        <div class="fix pic b"></div>
+        <div class="fix mountains"></div>
     </div>
     <script>
         window.addEventListener("scroll", function(event){
