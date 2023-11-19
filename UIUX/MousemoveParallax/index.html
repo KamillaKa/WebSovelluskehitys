@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inconsolata&display=swap" rel="stylesheet">
+    <title>Mouse move Parallax</title>
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    html {
+        scroll-behavior: smooth;
+    }
+
+    body {
+        font-family: 'Inconsolata', monospace;
+        background-color: black;
+        overflow-x: hidden;
+        overflow-y: auto;
+        will-change: scroll-position;
+    }
+
+    .hero {
+        height: 700px;
+        background-color: black;
+    }
+
+    main {
+        padding: 2em;
+        color: palegoldenrod;
+        background-color: #150f0c;
+        position: relative;
+        z-index: 10;
+        margin-top: -5px;
+    }
+
+    .pic {
+        width: 100%;
+        height: 700px;
+        background-position: bottom center;
+        background-repeat: no-repeat;
+        background-size: auto;
+        position: fixed;
+    }
+
+    .fix {
+        /* background-attachment: fixed;
+        background-size: cover; */
+        background-color: peachpuff;
+    }
+
+    .c {
+        background-image: url(images/bg.jpg);
+    } 
+
+    .d {
+        background-image: url(images/1.png);
+    } 
+
+    .e {
+        background-image: url(images/2.png);
+    } 
+
+    .f {
+        background-image: url(images/3.png);
+        height: 600px;
+        bottom: 20px;
+    } 
+
+    .g {
+        background-image: url(images/4.png);
+        right: 500px;
+    } 
+
+    .h {
+        background-image: url(images/5.png);
+    } 
+
+    #spacecat {
+        width: 100%;
+        height: 100vh;
+        background-color: paleturquoise;
+        background-image: url(images/space.jpg);
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-attachment: fixed;
+        background-size: cover;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .cat {
+        background-image: url(images/astroCat.png);
+        position: absolute;
+        top: 10%;
+        left: 40%;
+        z-index: 4;
+        width: 800px;
+        height: 1024px;
+    }
+
+    .cat:hover {
+        filter: hue-rotate(90deg); 
+        transition: transform 0.3s, filter 0.3s;
+    
+    }
+
+    .ship {
+        background-image: url(images/spaceship.png);
+        position: absolute;
+        background-repeat: no-repeat;
+        top: 15%;
+        left: 25%;
+        z-index: 3;
+        width: 900px;
+        height: 300px;
+    }
+
+    .ship:hover {
+        filter: hue-rotate(-90deg); /* Color shift */
+        transition: transform 0.3s, filter 0.3s;
+    }
+
+    #mouse, #mouse-center {
+        color: greenyellow;
+        border: solid 1px greenyellow;
+        width: 250px;
+        height: 50px;
+    }
+
+    #mouse {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        z-index: 5;
+    }
+
+    #mouse-center {
+        position: absolute;
+        top: 70px;
+        right: 20px;
+        z-index: 5;
+    }
+
+    .overlapping {
+        position: absolute;
+    }
+
+</style>
+<body>
+    <div class="hero">
+        <div class="pic c" data-type="parallax" data-speed="5"></div>
+        <div class="pic d" data-type="parallax" data-speed="20"></div>
+        <div class="pic e" data-type="parallax" data-speed="40"></div>
+        <div class="pic f" data-type="parallax" data-speed="60"></div>
+        <div class="pic g" data-type="parallax" data-speed="80"></div>
+        <div class="pic h" data-type="parallax" data-speed="100"></div>
+    </div>
+    <main>
+        <h1>Lorem ipsum dolor sit amet consectetur adipisicing elit.</h1>
+        <p>
+            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Porro, ea provident molestias ex placeat animi mollitia itaque dolore vitae laboriosam veritatis nesciunt nostrum. Optio velit tempore eos amet, soluta expedita.
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. In maiores itaque debitis doloribus quia. Commodi a quae nostrum. At amet odit laudantium hic molestiae accusamus velit rerum impedit minus fugiat.
+        </p>
+    </main>
+    <div id="spacecat">
+        <div class="cat overlapping"></div>
+        <div class="ship overlapping"></div>
+        <div id="mouse"></div>
+        <div id="mouse-center"></div>
+    </div>
+    <script>
+        window.addEventListener("scroll", function(event){
+
+            var top = this.pageYOffset;
+    
+            var layers = document.querySelectorAll('[data-type="parallax"]');
+            var layer, speed, yPos;
+            for (var i = 0; i < layers.length; i++) {
+                layer = layers[i];
+                speed = layer.getAttribute('data-speed');
+                var yPos = -(top * speed / 100);
+                layer.setAttribute('style', 'transform: translate3d(0px, ' + yPos + 'px, 0px)');
+    
+            }
+        });
+
+        const mouseleftbox = document.querySelector('#mouse');
+        const mousecenterbox = document.querySelector('#mouse-center');
+        const spacecat = document.querySelector('#spacecat');
+        const astrocat = document.querySelector('.cat');
+        const ufo = document.querySelector('.ship');
+        
+
+        document.addEventListener('mousemove', (evt) => {
+
+            let cx = spacecat.clientWidth/2;
+            let cy = spacecat.clientHeight/2;
+
+            console.log(evt);
+
+            let mouseX = evt.clientX,
+                mouseY = evt.clientY;
+
+            let mouseposition = `From the left corner <br> x:${mouseX}px and y:${mouseY}px`;
+            mouseleftbox.innerHTML = mouseposition;
+
+            let from_center_x = cx - mouseX;
+            let from_center_y = cy - mouseY;
+
+            let mouscenterposition = `From the center <br> x:${from_center_x}px and y:${from_center_y}px`;
+            mousecenterbox.innerHTML = mouscenterposition;
+            
+            astrocat.setAttribute('style', 'transform: translate3d(' + from_center_x/10 + 'px, ' + from_center_y/10 + 'px, 0px)');
+            ufo.setAttribute('style', 'transform: translate3d(' + from_center_x/12 + 'px, ' + from_center_y/12 + 'px, 0px)');
+        })
+
+        
+    </script>
+</body>
+</html>
