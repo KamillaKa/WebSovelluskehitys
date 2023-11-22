@@ -1,6 +1,7 @@
 import express from "express";
 import path from "path";
 import { fileURLToPath } from "url";
+import authRouter from "./routes/auth-router.mjs";
 import mediaRouter from "./routes/media-router.mjs";
 import userRouter from "./routes/user-router.mjs";
 import likesRouter from "./routes/likes-router.mjs";
@@ -35,6 +36,7 @@ app.get("/", (req, res) => {
 });
 
 // Modular routes
+app.use("api/auth", authRouter);
 app.use("/api/media", mediaRouter);
 app.use("/api/users", userRouter);
 app.use("/api/likes", likesRouter);

@@ -1,3 +1,16 @@
+## auth/login
+POST http://localhost:3000/api/auth/login
+content-type: application/json
+
+{
+  "username": "root",
+  "password": "2345"
+}
+
+### get my user info
+GET http://localhost:3000/api/auth/me
+Authorization: Bearer <token>
+
 ### Get all media
 GET http://localhost:3000/api/media
 
