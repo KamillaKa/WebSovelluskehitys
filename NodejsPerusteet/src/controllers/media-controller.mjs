@@ -1,20 +1,37 @@
-import { fetchAllMedia } from "../models/media-model.mjs";
-import { addMedia } from "../models/media-model.mjs";
+import { validationResult } from "express-validator";
+import {
+  addMedia,
+  fetchAllMedia,
+  fetchMediaById,
+} from "../models/media-model.mjs";
 
-const postMedia = async (req, res) => {
-  console.log("uploaded file", req.file);
-  console.log("uploaded form data", req.body);
+const postMedia = async (req, res, next) => {
+  //console.log('uploaded file', req.file);
+  //console.log('uploaded form data', req.body);
+  if (!req.file) {
+    const error = new Error({ message: "file missing or invalid" });
+    error.status = 400;
+    next(error);
+  }
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    // details about errors:
+    console.log(errors.array());
+    const error = new Error("invalid input fields");
+    error.status = 400;
+    return next(error);
+  }
   const { title, description } = req.body;
   const { filename, mimetype, size } = req.file;
-  const user_id = req.user.id;
-  if (filename && title && user_id) {
-    const newMedia = { title, description, user_id, filename, mimetype, size };
-    const result = await addMedia(newMedia);
-    res.status(201);
-    res.json({ message: "New media item added", ...result });
-  } else {
-    res.sendStatus(400);
+  // req.user is added by authenticateToken middleware
+  const user_id = req.user.user_id;
+  const newMedia = { title, description, user_id, filename, mimetype, size };
+  const result = await addMedia(newMedia);
+  if (result.error) {
+    return next(new Error(result.error));
   }
+  res.status(201);
+  res.json({ message: "New media item added.", ...result });
 };
 
 const getMedia = async (req, res) => {

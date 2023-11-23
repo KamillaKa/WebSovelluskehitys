@@ -46,6 +46,10 @@ app.use("/api/comments", commentsRouter);
 app.use((req, res, next) => {
   res.status(404).send("404: Page not found");
 });
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send("500: Internal server error");
+});
 
 // Start the server
 app.listen(port, hostname, () => {

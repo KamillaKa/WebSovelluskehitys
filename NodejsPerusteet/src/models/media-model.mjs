@@ -27,7 +27,7 @@ const fetchMediaById = async (id) => {
 const addMedia = async (media) => {
   const { user_id, filename, size, mimetype, title, description } = media;
   const sql = `INSERT INTO mediaItems (user_id, filename, filesize, media_type, title, description)
-               VALUES (?, ?, ?, ?, ?, ?)`;
+               VALUES (?, ?, ?, ?, ?, ?, ?)`;
   const params = [user_id, filename, size, mimetype, title, description];
   try {
     const rows = await promisePool.query(sql, params);

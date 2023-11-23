@@ -1,5 +1,4 @@
 import express from "express";
-import multer from "multer";
 import {
   getMediaById,
   deleteMedia,
@@ -9,14 +8,23 @@ import {
 } from "../controllers/media-controller.mjs";
 import logger from "../middleware/middlewares.mjs";
 import { authenticateToken } from "../middleware/auth.mjs";
+import { body } from "express-validator";
+import upload from "../middleware/upload.mjs";
 
 const mediaRouter = express.Router();
-const upload = multer({ dest: "uploads/" });
 
 // mediaRouter.use(logger);
+mediaRouter
+  .route("/")
+  .get(getMedia)
+  .post(
+    authenticateToken,
+    upload.single("file"),
+    body("title").trim().isLength({ min: 3 }),
+    body("description"),
+    postMedia
+  );
 
-mediaRouter.post(authenticateToken, upload.single("file"), postMedia);
-mediaRouter.route("/").get(getMedia).post(upload.single("file"), postMedia);
 mediaRouter
   .route("/:id")
   .get(getMediaById)

@@ -1,3 +1,5 @@
+import { addUser } from "../models/user-model.mjs";
+
 const getUsers = async (req, res) => {
   try {
     const users = await UserModel.getAllUsers();
@@ -7,8 +9,8 @@ const getUsers = async (req, res) => {
       .status(500)
       .json({ message: "Internal server error", error: error.message });
   }
+  res.json(users);
 };
-
 const getUserById = async (req, res) => {
   try {
     const user = await UserModel.getUserById(req.params.id);
@@ -27,14 +29,13 @@ const getUserById = async (req, res) => {
 };
 
 const postUser = async (req, res) => {
-  try {
-    const newUser = await UserModel.addUser(req.body);
-    res.status(201).json(newUser);
-  } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Internal server error", error: error.message });
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    console.log(errors.array());
+    return res.status(400).json({ message: "invalid input fiels" });
   }
+  const newUserId = await addUser(req.body);
+  res.status(201).json({ message: "user added", user_id: newUserId });
 };
 
 const putUser = async (req, res) => {
