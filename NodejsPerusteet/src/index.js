@@ -6,6 +6,11 @@ import mediaRouter from "./routes/media-router.mjs";
 import userRouter from "./routes/user-router.mjs";
 import likesRouter from "./routes/likes-router.mjs";
 import commentsRouter from "./routes/comments-router.mjs";
+import {
+  authenticateToken,
+  verifyMediaOwner,
+  verifyUserUpdate,
+} from "./middleware/auth.mjs";
 
 import logger from "./middleware/middlewares.mjs";
 const hostname = "127.0.0.1";
@@ -41,6 +46,19 @@ app.use("/api/media", mediaRouter);
 app.use("/api/users", userRouter);
 app.use("/api/likes", likesRouter);
 app.use("/api/comments", commentsRouter);
+app.put(
+  "/api/media/:id",
+  authenticateToken,
+  verifyMediaOwner,
+  mediaUpdateFunction
+);
+app.delete(
+  "/api/media/:id",
+  authenticateToken,
+  verifyMediaOwner,
+  mediaDeleteFunction
+);
+app.put("/api/users/", authenticateToken, verifyUserUpdate, userUpdateFunction);
 
 // Error handling - catch-all for unhandled routes
 app.use((req, res, next) => {
