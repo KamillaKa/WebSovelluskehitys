@@ -56,4 +56,11 @@ app.listen(port, hostname, () => {
   console.log(`Server running at http://${hostname}:${port}/`);
 });
 
+const express = require("express");
+const userRoutes = require("./userRoutes");
+
+const app = express();
+app.use(express.json());
+app.use("/user", userRoutes);
+
 export default app;
