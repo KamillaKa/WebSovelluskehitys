@@ -14,7 +14,7 @@ import {
 } from "./middleware/middlewares.mjs";
 
 const hostname = "127.0.0.1";
-const port = 3000;
+const port = 3001;
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);

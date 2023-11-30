@@ -45,6 +45,40 @@ const authRouter = express.Router();
  * @apiUse UnauthorizedError
  */
 
+/**
+ * @api {get} /auth/me Request information about current user
+ * @apiVersion 1.0.0
+ * @apiName GetMe
+ * @apiGroup Authentication
+ * @apiPermission token
+ * @apiHeader {String} Authorization Bearer token.
+ *
+ * @apiSuccess {Object} user User info.
+ * @apiSuccess {Number} user.user_id Id of the User.
+ * @apiSuccess {String} user.username Username of the User.
+ * @apiSuccess {String} user.email email of the User.
+ * @apiSuccess {Number} user.user_level_id User level id of the User.
+ * @apiSuccess {Number} user.iat Token creation timestamp.
+ *
+ * @apiSuccessExample Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       "user_id": 21,
+ *       "username": "johnd",
+ *       "email": "johnd@example.com",
+ *       "user_level_id": 2,
+ *       "iat": 1701279021
+ *     }
+ *
+ * @apiError InvalidToken Authentication token was invalid.
+ *
+ * @apiErrorExample Error-Response:
+ *     HTTP/1.1 403 Forbidden
+ *     {
+ *       "message": "invalid token"
+ *     }
+ */
+
 // user endpoints
 authRouter.route("/login").post(postLogin);
 authRouter.route("/me").get(authenticateToken, getMe);

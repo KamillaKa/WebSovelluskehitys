@@ -6,7 +6,7 @@ import {
   postMedia,
   updatedMedia,
 } from "../controllers/media-controller.mjs";
-import logger from "../middleware/middlewares.mjs";
+import { logger } from "../middleware/middlewares.mjs";
 import { authenticateToken } from "../middleware/auth.mjs";
 import { body } from "express-validator";
 import upload from "../middleware/upload.mjs";
