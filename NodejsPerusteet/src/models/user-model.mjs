@@ -7,10 +7,10 @@ import { promisePool } from "../utils/database.mjs";
  * @returns user object
  */
 
-const login = async () => {
+const login = async (username) => {
   try {
-    const sql = `SELECT user_id, username FROM Users WHERE username = ? AND password = ?`;
-    const params = [userCreds.username, userCreds.password];
+    const sql = `SELECT user_id, username, password, email, user_level_id FROM Users WHERE username = ?`;
+    const params = [username];
     const result = await promisePool.query(sql, params);
     const [rows] = result;
     return rows[0];

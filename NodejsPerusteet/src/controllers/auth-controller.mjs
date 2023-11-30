@@ -1,16 +1,27 @@
 import jwt from "jsonwebtoken";
 import "dotenv/config.js";
-
 import { login } from "../models/user-model.mjs";
+import bcrypt from "bcryptjs";
 
-const postLogin = async (req, res) => {
-  const user = await login(req.body);
-  console.log("postLogin", user);
-  try {
+const postLogin = async (req, res, next) => {
+  const user = await login(req.body.username);
+  if (!user) {
+    const error = new Error("invalid username or password");
+    error.status = 401;
+    return next(error);
+  }
+  if (user.error) {
+    return next(error);
+  }
+  const match = await bcrypt.compare(req.body.password, user.password);
+  if (match) {
+    delete user.password;
     const token = jwt.sign(user, process.env.JWT_SECRET);
-    res.json({ message: "You are logged in!", token, user });
-  } catch (error) {
-    res.status(401).json({ message: "invalid username/password" });
+    res.json({ message: "logged in", token, user });
+  } else {
+    const error = new Error("username/password invalid");
+    error.status = 401;
+    return next(error);
   }
 };
 

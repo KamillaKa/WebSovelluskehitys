@@ -1,4 +1,6 @@
 import { addUser } from "../models/user-model.mjs";
+import { validationResult } from "express-validator";
+import bcrypt from "bcryptjs";
 
 const getUsers = async (req, res) => {
   try {
@@ -34,7 +36,12 @@ const postUser = async (req, res) => {
     console.log(errors.array());
     return res.status(400).json({ message: "invalid input fiels" });
   }
-  const newUserId = await addUser(req.body);
+  const newUser = req.body;
+  const salt = await bcrypt.genSalt(10);
+  const hashedPassword = await bcrypt.hash(newUser.password, salt);
+  newUser.password = hashedPassword;
+  console.log("postUser", newUser);
+  const newUserId = await addUser(newUser);
   res.status(201).json({ message: "user added", user_id: newUserId });
 };
 

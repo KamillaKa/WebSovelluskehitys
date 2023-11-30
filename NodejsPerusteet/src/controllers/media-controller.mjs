@@ -6,35 +6,24 @@ import {
 } from "../models/media-model.mjs";
 
 const postMedia = async (req, res, next) => {
-  try {
-    if (!req.file) {
-      const error = new Error("File missing or invalid");
-      error.status = 400;
-      throw error;
-    }
-
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      console.log(errors.array());
-      const error = new Error("Invalid input fields");
-      error.status = 400;
-      throw error;
-    }
-
-    const { title, description } = req.body;
-    const { filename, mimetype, size } = req.file;
-    const user_id = req.user.user_id;
-    const newMedia = { title, description, user_id, filename, mimetype, size };
-
-    const result = await addMedia(newMedia);
-    if (result.error) {
-      throw new Error(result.error);
-    }
-
-    res.status(201).json({ message: "New media item added.", ...result });
-  } catch (error) {
-    next(error);
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    console.log("validation errors", errors.array());
+    const error = new Error("Invalid input fields");
+    error.status = 400;
+    return next(error);
   }
+
+  const { title, description } = req.body;
+  const { filename, mimetype, size } = req.file;
+  const user_id = req.user.user_id;
+  const newMedia = { title, description, user_id, filename, mimetype, size };
+
+  const result = await addMedia(newMedia);
+  if (result.error) {
+    return next(new Error(result.error));
+  }
+  res.status(201).json({ message: "New media item added.", ...result });
 };
 
 const getMedia = async (req, res) => {
