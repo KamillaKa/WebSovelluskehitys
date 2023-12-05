@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
-    "docs": "apidoc -i src/ -o docs/",
+    "apidoc": "apidoc -i src/ -o docs/",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "kamilla",
