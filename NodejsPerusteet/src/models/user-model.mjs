@@ -9,14 +9,15 @@ import { promisePool } from "../utils/database.mjs";
 
 const login = async (username) => {
   try {
-    const sql = `SELECT user_id, username, password, email, user_level_id FROM Users WHERE username = ?`;
+    const sql = `SELECT user_id, username, password, email, user_level_id
+                 FROM Users WHERE username = ?`;
     const params = [username];
     const result = await promisePool.query(sql, params);
     const [rows] = result;
     return rows[0];
   } catch (e) {
-    console.error("error", e.message);
-    return { error: e.message };
+    console.error('error', e.message);
+    return {error: e.message};
   }
 };
 

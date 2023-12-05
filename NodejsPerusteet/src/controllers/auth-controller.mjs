@@ -11,7 +11,7 @@ const postLogin = async (req, res, next) => {
     return next(error);
   }
   if (user.error) {
-    return next(error);
+    return next(new Error(result.error));
   }
   const match = await bcrypt.compare(req.body.password, user.password);
   if (match) {

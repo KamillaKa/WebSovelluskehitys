@@ -1,9 +1,34 @@
 import express from "express";
-import { postLogin } from "../controllers/auth-controller.mjs";
-import { getMe } from "../controllers/auth-controller.mjs";
+import { postLogin, getMe } from "../controllers/auth-controller.mjs";
 import { authenticateToken } from "../middleware/auth.mjs";
 
 const authRouter = express.Router();
+
+/**
+ * @apiDefine all No authentication needed.
+ */
+
+/**
+ * @apiDefine admin Admin user token needed
+ */
+
+/**
+ * @apiDefine token Logged in user access only
+ * Valid authentication token must be provided within request.
+ */
+
+/**
+ * @apiDefine UnauthorizedError
+ * @apiError UnauthorizedError User name or password invalid.
+ * @apiErrorExample Error-Response:
+ *     HTTP/1.1 403 Forbidden
+ *     {
+ *       "error": {
+ *         "message": "username/password invalid",
+ *         "status": 401
+ *       }
+ *     }
+ */
 
 /**
  * @api {post} /login Login
@@ -45,6 +70,9 @@ const authRouter = express.Router();
  * @apiUse UnauthorizedError
  */
 
+// user endpoints
+authRouter.route("/login").post(postLogin);
+
 /**
  * @api {get} /auth/me Request information about current user
  * @apiVersion 1.0.0
@@ -79,8 +107,6 @@ const authRouter = express.Router();
  *     }
  */
 
-// user endpoints
-authRouter.route("/login").post(postLogin);
 authRouter.route("/me").get(authenticateToken, getMe);
 
 export default authRouter;
